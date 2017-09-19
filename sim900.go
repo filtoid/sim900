@@ -200,7 +200,7 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 		return err
 	}
 
-	cmd = fmt.Sprintf(CMD_HTTPPARA,"CID") 
+	cmd = fmt.Sprintf(CMD_HTTPPARA,"\"CID\",1") 
 	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
 	if err != nil {
 		return err
