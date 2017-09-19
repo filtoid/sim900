@@ -5,6 +5,7 @@ const (
 	CMD_AT             string = "AT"
 	CMD_OK             string = "(^OK$)"
 	CMD_DOWNLOAD       string = "(^DOWNLOAD)"
+	CMD_HTTPACT_RESP   string = "(^HTTPACTION:)"
 	CMD_ERROR          string = "(^ERROR$)"
 	CMD_CMGF           string = "AT+CMGF?"
 	CMD_CMGF_SET       string = "AT+CMGF=%s"
