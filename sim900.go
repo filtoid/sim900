@@ -155,3 +155,91 @@ func (s *SIM900) CheckSMSTextMode(mode int) error {
 	_, err := s.wait4response(cmd, CMD_OK, time.Second*1)
 	return err
 }
+
+func (s *SIM900) ConnectToGPRS() error {
+	cmd := fmt.Sprintf(CMD_SAPBR, "3,1,\"contype\",\"GPRS\"")
+	_, err := s.wait4response(cmd, CMD_OK, time.Second*1)
+
+	if err!=nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf(CMD_SAPBR, "3,1,\"APN\",\"www\"") 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+
+	if err != nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf(CMD_SAPBR, "1,1") 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	if err != nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf(CMD_SAPBR, "2,1") 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Send Data Packet to Ip Address
+func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
+	// First make sure we are connected and set up for GPRS
+	err := s.ConnectToGPRS()
+	if err != nil {
+		return err
+	}
+	
+	cmd := fmt.Sprintf(CMD_HTTPINIT) 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	if err != nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf(CMD_HTTPPARA,"CID") 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	if err != nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf(CMD_HTTPPARA,"\"URL\",\"", ipaddress, "\"") 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	if err != nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf(CMD_HTTPPARA,"\"CONTENT\",\"application/json\"") 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	if err != nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf(CMD_HTTPDATA,len(data), ",100000\r\n",data) 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	if err != nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf(CMD_HTTPACTION, "=1") 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	if err != nil {
+		return err
+	}
+	
+	cmd = fmt.Sprintf(CMD_HTTPREAD) 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	if err != nil {
+		return err
+	}
+		
+	cmd = fmt.Sprintf(CMD_HTTPTERM) 
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	if err != nil {
+		return err
+	}
+	return nil
+}

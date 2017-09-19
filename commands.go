@@ -18,6 +18,13 @@ const (
 	CMD_CMGR_RX        string = "+CMGR: "
 	CMD_CMTI_REGEXP    string = "(^[+]CMTI[:] \"SM\",[0-9]+$)"
 	CMD_CMTI_RX        string = "+CMTI: \"SM\","
+	CMD_SAPBR          string = "AT+SAPBR="
+	CMD_HTTPINIT       string = "AT+HTTPINIT"
+	CMD_HTTPPARA       string = "AT+HTTPPARA="
+	CMD_HTTPDATA       string = "AT+HTTPDATA="
+	CMD_HTTPACTION     string = "AT+HTTPACTION="
+	CMD_HTTPREAD       string = "AT+HTTPREAD"
+	CMD_HTTPTERM       string = "AT+HTTPTERM"
 )
 
 // SMS Message Format
