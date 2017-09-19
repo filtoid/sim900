@@ -202,19 +202,19 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 	}
 
 	cmd = fmt.Sprintf(CMD_HTTPPARA,"\"CID\",1") 
-	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*2)
 	if err != nil {
 		return err
 	}
 	fullstr := "\"URL\",\"" + ipaddress + "\""
 	cmd = fmt.Sprintf(CMD_HTTPPARA,fullstr) 
-	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*2)
 	if err != nil {
 		return err
 	}
 
 	cmd = fmt.Sprintf(CMD_HTTPPARA,"\"CONTENT\",\"application/json\"") 
-	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*2)
 	if err != nil {
 		return err
 	}
@@ -222,13 +222,13 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 	len_data := len(data)
 	fullstr = strconv.Itoa(len_data) + ",20000"
 	cmd = fmt.Sprintf(CMD_HTTPDATA,fullstr) 
-	_, err = s.wait4response(cmd, CMD_DOWNLOAD, time.Second*1)
+	_, err = s.wait4response(cmd, CMD_DOWNLOAD, time.Second*2)
 	if err != nil {
 		return err
 	}
 
 	// We now have 20s to write the data to the board
-	_, err = s.wait4response(data, CMD_OK, time.Second*1)
+	_, err = s.wait4response(data, CMD_OK, time.Second*2)
 	if err != nil {
 		return err
 	}
@@ -241,14 +241,14 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 	}
 	
 	cmd = fmt.Sprintf(CMD_HTTPREAD) 
-	res, err := s.wait4response(cmd, CMD_OK, time.Second*1)
+	res, err := s.wait4response(cmd, CMD_OK, time.Second*2)
 	if err != nil {
 		return err
 	}
 	fmt.Println(res)
 
 	cmd = fmt.Sprintf(CMD_HTTPTERM) 
-	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*2)
 	if err != nil {
 		return err
 	}
