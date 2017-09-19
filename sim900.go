@@ -196,7 +196,7 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 	}
 	
 	cmd := fmt.Sprintf(CMD_HTTPINIT) 
-	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	_, err = s.wait4response(cmd, CMD_OK, time.Second*2)
 	if err != nil {
 		return err
 	}
