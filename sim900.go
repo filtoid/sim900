@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"strconv"
 )
 
 /*******************************************************************************************
@@ -217,13 +218,17 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 	if err != nil {
 		return err
 	}
-	len_data := len(data)
-	fmt.Println("The length of data is ")
-	fmt.Println(len_data)
 	
-	fullstr = string(len_data) + ",100000\r\n" + data
+	len_data := len(data)
+	fullstr = strconv.Itoa(len_data) + ",20000"
 	cmd = fmt.Sprintf(CMD_HTTPDATA,fullstr) 
-	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
+	_, err = s.wait4response(cmd, CMD_DOWNLOAD, time.Second*1)
+	if err != nil {
+		return err
+	}
+
+	// We now have 20s to write the data to the board
+	_, err = s.wait4response(data, CMD_OK, time.Second*1)
 	if err != nil {
 		return err
 	}
