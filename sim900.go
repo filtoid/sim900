@@ -217,7 +217,11 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 	if err != nil {
 		return err
 	}
-	fullstr = string(len(data)) + ",100000\r\n" + data
+	len_data := len(data)
+	fmt.Println("The length of data is ")
+	fmt.Println(len_data)
+	
+	fullstr = string(len_data) + ",100000\r\n" + data
 	cmd = fmt.Sprintf(CMD_HTTPDATA,fullstr) 
 	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
 	if err != nil {
