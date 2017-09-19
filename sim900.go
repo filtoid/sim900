@@ -218,7 +218,7 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	len_data := len(data)
 	fullstr = strconv.Itoa(len_data) + ",20000"
 	cmd = fmt.Sprintf(CMD_HTTPDATA,fullstr) 
@@ -233,7 +233,7 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 		return err
 	}
 
-	cmd = fmt.Sprintf(CMD_HTTPACTION, "=1") 
+	cmd = fmt.Sprintf(CMD_HTTPACTION, "1") 
 	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
 	if err != nil {
 		return err
