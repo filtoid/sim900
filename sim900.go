@@ -205,8 +205,8 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 	if err != nil {
 		return err
 	}
-
-	cmd = fmt.Sprintf(CMD_HTTPPARA,"\"URL\",\"", ipaddress, "\"") 
+	fullstr := "\"URL\",\"" + ipaddress + "\""
+	cmd = fmt.Sprintf(CMD_HTTPPARA,fullstr) 
 	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
 	if err != nil {
 		return err
@@ -217,8 +217,8 @@ func (s *SIM900) SendDataPacket(ipaddress string, data string) error {
 	if err != nil {
 		return err
 	}
-
-	cmd = fmt.Sprintf(CMD_HTTPDATA,len(data), ",100000\r\n",data) 
+	fullstr = string(len(data)) + ",100000\r\n" + data
+	cmd = fmt.Sprintf(CMD_HTTPDATA,fullstr) 
 	_, err = s.wait4response(cmd, CMD_OK, time.Second*1)
 	if err != nil {
 		return err
